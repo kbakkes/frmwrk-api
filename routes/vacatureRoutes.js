@@ -5,32 +5,9 @@ let routes = function(Sollicitatie){
     let vacatureRouter = express.Router();
 
 
-    // Baan zoeken op basis van ID
-    vacatureRouter.use('/vacatures/:_id',function(req,res,next) {
-        console.log(req);
-        Sollicitatie.findById(req.params._id, function (err, vacature) {
-            if (err)
-                res.status(500).send(err);
-            else if (vacature) {
-                req.vacature = vacature;
-                next();
-            }
-            else {
-                res.status(404).send('Geen vacature gevonden...');
-            }
-        });
-    });
-
-
-
-
-
-    // Route voor Job ID
     vacatureRouter.route('/sollicitaties/:_id')
         .get(function(req,res) {
             Sollicitatie.find({'_id': req.params._id }, function(err,docs){
-                //     Sollicitatie.find({'voornaam': 'Karim' }, function(err,docs){
-                console.log(docs);
                 if (err)
                     res.status(500).send(err);
                 else if(docs)
@@ -43,10 +20,6 @@ let routes = function(Sollicitatie){
 
             });
         })
-
-
-
-
 
 
         .put(function(req,res){
@@ -70,12 +43,12 @@ let routes = function(Sollicitatie){
         })
 
         .delete(function(req, res){
-            req.job.remove(function (err) {
+            Sollicitatie.deleteOne({'_id': req.params._id} ,function (err) {
                 if (err) {
                     res.status(500).send(err);
                 }
                 else {
-                    res.send(204)
+                    res.status(204).send('Sollicitatie is verwijderd...')
                 }
             });
         })

@@ -111,7 +111,7 @@ let routes = function(Job,Sollicitatie){
                     res.status(500).send(err);
                 }
                 else {
-                    res.send(204)
+                    res.status(204).send('Sollicitatie is verwijderd...')
                 }
             });
         })
