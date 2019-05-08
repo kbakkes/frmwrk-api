@@ -5,6 +5,22 @@ let routes = function(Sollicitatie){
     let vacatureRouter = express.Router();
 
 
+    // Return alle sollicitaties
+    vacatureRouter.route('/sollicitaties/')
+        .get(function(req,res) {
+        Sollicitatie.find({},function (err, docs) {
+            if (err)
+                res.status(500).send(err);
+            else if (docs) {
+                res.json(docs);
+            }
+            else {
+                res.status(404).send('Geen vacature gevonden...');
+            }
+        });
+    });
+
+
     vacatureRouter.route('/sollicitaties/:_id')
         .get(function(req,res) {
             Sollicitatie.find({'_id': req.params._id }, function(err,docs){
@@ -20,7 +36,6 @@ let routes = function(Sollicitatie){
 
             });
         })
-
 
         .put(function(req,res){
             if (req.body.voornaam && req.body.achternaam && req.body.emailadres && req.body.werkervaring) {

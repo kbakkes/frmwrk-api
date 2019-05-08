@@ -45,12 +45,9 @@ let jobController = function(Job) {
 
                         jobs.forEach(function (element, index, array) {
                             let newJobs = element.toJSON();
-
-
                             returnJobs.push(newJobs);
 
                         });
-
                         res.json(returnJobs);
                     }
                 });

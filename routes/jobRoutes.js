@@ -31,8 +31,6 @@ let routes = function(Job,Sollicitatie){
         jobRouter.use('/vacatures/:_id/sollicitaties',function(req,res,next){
             console.log(req.params._id);
             Sollicitatie.find({'functie': req.params._id }, function(err,docs){
-            //     Sollicitatie.find({'voornaam': 'Karim' }, function(err,docs){
-                    console.log(docs);
                 if (err)
                     res.status(500).send(err);
                 else if(docs)
