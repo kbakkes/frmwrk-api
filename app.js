@@ -15,7 +15,9 @@ let db = mongoose.connect('mongodb://localhost/api/frmwrk');
 
 let Job  = require('./models/jobModel');
 let Sollicitatie = require('./models/sollicitatieModel');
+
 jobRouter = require('./routes/jobRoutes')(Job, Sollicitatie);
+vacatureRouter = require('./routes/vacatureRoutes')(Sollicitatie);
 
 
 let app = express();
@@ -32,13 +34,14 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api/vacatures', jobRouter );
+app.use('api/sollicitaties', vacatureRouter);
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 
 
 
-app.use('/api', jobRouter);
+app.use('/api', jobRouter, vacatureRouter);
 
 
 

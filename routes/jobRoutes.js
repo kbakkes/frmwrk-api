@@ -25,7 +25,6 @@ let routes = function(Job,Sollicitatie){
                 res.status(404).send('Geen vacature gevonden...');
             }
         });
-
     });
 
         // Baan zoeken op basis van ID
@@ -33,7 +32,6 @@ let routes = function(Job,Sollicitatie){
             console.log(req.params._id);
             Sollicitatie.find({'functie': req.params._id }, function(err,docs){
             //     Sollicitatie.find({'voornaam': 'Karim' }, function(err,docs){
-
                     console.log(docs);
                 if (err)
                     res.status(500).send(err);
