@@ -43,17 +43,6 @@ let routes = function(Job,Sollicitatie){
 
             });
 
-
-
-        jobRouter.route('/vacatures/:_id/sollicitaties', "POST")
-            .get(function (req,res) {
-
-
-
-                console.log('Hier moeten alle sollicitaties komen');
-            })
-
-
     });
 
     // Route voor Job ID
@@ -69,15 +58,15 @@ let routes = function(Job,Sollicitatie){
         .post(function (req,res) {
                 let sollicitatie = new Sollicitatie();
 
+                let s = req.body;
                 // Als alle velden aanwezig zijn kan er gepost worden
-                if (req.body.voornaam && req.body.achternaam && req.body.emailadres && req.body.werkervaring) {                    console.log('gelukt');
-                    sollicitatie.voornaam = req.body.voornaam;
-                    sollicitatie.achternaam = req.body.achternaam;
-                    sollicitatie.emailadres = req.body.emailadres;
-                    sollicitatie.werkervaring = req.body.werkervaring;
+                if (s.voornaam && s.body.achternaam && s.body.emailadres && s.body.werkervaring && s.vaardigheden) {                    console.log('gelukt');
+                    sollicitatie.voornaam = s.voornaam;
+                    sollicitatie.achternaam = s.achternaam;
+                    sollicitatie.emailadres = s.emailadres;
+                    sollicitatie.werkervaring = s.werkervaring;
                     sollicitatie.functie = req.job._doc._id;
-
-
+                    sollicitatie.vaardigheden = s.vaardigheden;
 
                     sollicitatie.save(function (err, sollicitatie) {
                         res.status(201).send(sollicitatie);

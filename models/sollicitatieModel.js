@@ -7,6 +7,7 @@ let sollicitatieModel = new Schema({
     emailadres: {type: String, required: true},
     werkervaring: {type: Number, required: true},
     functie: {type: String, required: true},
+    vaardigheden: {type: Array, required: true}
 
 });
 
