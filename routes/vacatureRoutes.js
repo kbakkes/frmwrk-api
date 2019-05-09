@@ -2,11 +2,30 @@ let  express = require ('express');
 
 let routes = function(Sollicitatie){
 
-    let vacatureRouter = express.Router();
+    let sollicitatieRouter = express.Router();
+
+
+
+
+    sollicitatieRouter.use('/sollicitaties/:_id',function(req,res,next){
+        Sollicitatie.findById(req.params._id, function(err,sollicitatie){
+            if (err)
+                res.status(500).send(err);
+            else if(sollicitatie)
+            {
+                req.sollicitatie = sollicitatie;
+                next();
+            }
+            else {
+                res.status(404).send('Geen Sollicitatie gevonden...');
+            }
+
+        });
+        });
 
 
     // Return alle sollicitaties
-    vacatureRouter.route('/sollicitaties/')
+    sollicitatieRouter.route('/sollicitaties/')
         // Validatie
         .get(function(req,res) {
             if(req.headers.token !== 'Karim'){
@@ -26,7 +45,7 @@ let routes = function(Sollicitatie){
     });
 
 
-    vacatureRouter.route('/sollicitaties/:_id')
+    sollicitatieRouter.route('/sollicitaties/:_id')
         .get(function(req,res) {
             if(req.headers.token !== 'Karim'){
                 res.status(203).send('Je hebt niet genoeg rechten om dit te bekijken...');
@@ -49,16 +68,14 @@ let routes = function(Sollicitatie){
         .put(function(req,res){
             if (req.body.voornaam && req.body.achternaam && req.body.emailadres && req.body.werkervaring) {
 
-                console.log(req.body);
+                req.sollicitatie.voornaam = req.body.voornaam;
+                req.sollicitatie.achternaam = req.body.achternaam;
+                req.sollicitatie.emailadres = req.body.emailadres;
+                req.sollicitatie.werkervaring = req.body.werkervaring;
+                req.sollicitatie.vaardigheden = req.body.vaardigheden;
 
-                req.s.voornaam = req.body.voornaam;
-                req.s.achternaam = req.body.achternaam;
-                req.s.emailadres = req.body.emailadres;
-                req.s.werkervaring = req.body.werkervaring;
-                req.s.vaaridgheden = req.body.vaardigheden;
-
-                req.s.save();
-                res.json(req.s);
+                req.sollicitatie.save();
+                res.json(req.sollicitatie);
             }
             else {
                 res.status(422).send("Some fields are empty")
@@ -86,7 +103,7 @@ let routes = function(Sollicitatie){
             res.sendStatus(200);
         });
 
-    return vacatureRouter;
+    return sollicitatieRouter;
 };
 
 
