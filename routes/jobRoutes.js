@@ -40,18 +40,13 @@ let routes = function(Job,Sollicitatie){
                 else {
                     res.status(404).send('Geen vacature gevonden...');
                 }
-
             });
-
-    });
+     });
 
     // Route voor Job ID
     jobRouter.route('/vacatures/:jobID')
         .get(function(req,res) {
             let returnJob = req.job.toJSON();
-            returnJob.sollicitaties = [];
-            returnJob.sollicitaties.push({'test': 'test message'});
-
             res.json(returnJob);
         })
 
@@ -59,9 +54,7 @@ let routes = function(Job,Sollicitatie){
                 let sollicitatie = new Sollicitatie();
 
                 let s = req.body;
-                // Als alle velden aanwezig zijn kan er gepost worden
                 if (s.voornaam && s.achternaam && s.emailadres && s.werkervaring && s.vaardigheden) {
-                    console.log('gelukt');
                     sollicitatie.voornaam = s.voornaam;
                     sollicitatie.achternaam = s.achternaam;
                     sollicitatie.emailadres = s.emailadres;
@@ -70,15 +63,14 @@ let routes = function(Job,Sollicitatie){
                     sollicitatie.vaardigheden = s.vaardigheden;
 
                     sollicitatie.save(function (err, sollicitatie) {
-                        res.status(201).send(sollicitatie);
+                        res.status(201)
+                            .send('Sollicitatie Verstuurt! Jouw unieke url om jouw profiel aan te vullen is: https://frmwrk.nl/api/' + sollicitatie._id);
                     })
                 }
                 else {
                     res.status(422).send("Nog niet alle velden zijn ingevult...")
                 }
         })
-
-
 
 
         .put(function(req,res){
@@ -110,9 +102,6 @@ let routes = function(Job,Sollicitatie){
             res.sendStatus(200);
         });
 
-        postSollicitatie = function (sollicitatie) {
-
-        };
 
     return jobRouter;
 };

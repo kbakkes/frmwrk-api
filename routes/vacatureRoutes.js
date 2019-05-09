@@ -67,7 +67,10 @@ let routes = function(Sollicitatie){
 
         .put(function(req,res){
             if (req.body.voornaam && req.body.achternaam && req.body.emailadres && req.body.werkervaring) {
-
+                if(req.headers.token !== 'Karim'){
+                    res.status(203).send('Je hebt niet genoeg rechten deze actie uit te voeren...');
+                    return;
+                }
                 req.sollicitatie.voornaam = req.body.voornaam;
                 req.sollicitatie.achternaam = req.body.achternaam;
                 req.sollicitatie.emailadres = req.body.emailadres;
