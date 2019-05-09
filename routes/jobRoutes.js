@@ -60,7 +60,8 @@ let routes = function(Job,Sollicitatie){
 
                 let s = req.body;
                 // Als alle velden aanwezig zijn kan er gepost worden
-                if (s.voornaam && s.achternaam && s.emailadres && s.werkervaring && s.vaardigheden) {                    console.log('gelukt');
+                if (s.voornaam && s.achternaam && s.emailadres && s.werkervaring && s.vaardigheden) {
+                    console.log('gelukt');
                     sollicitatie.voornaam = s.voornaam;
                     sollicitatie.achternaam = s.achternaam;
                     sollicitatie.emailadres = s.emailadres;

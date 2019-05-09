@@ -7,7 +7,12 @@ let routes = function(Sollicitatie){
 
     // Return alle sollicitaties
     vacatureRouter.route('/sollicitaties/')
+        // Validatie
         .get(function(req,res) {
+            if(req.headers.token !== 'Karim'){
+                res.status(203).send('Je hebt niet genoeg rechten om dit te bekijken...');
+                return;
+            }
         Sollicitatie.find({},function (err, docs) {
             if (err)
                 res.status(500).send(err);
@@ -23,6 +28,10 @@ let routes = function(Sollicitatie){
 
     vacatureRouter.route('/sollicitaties/:_id')
         .get(function(req,res) {
+            if(req.headers.token !== 'Karim'){
+                res.status(203).send('Je hebt niet genoeg rechten om dit te bekijken...');
+                return;
+            }
             Sollicitatie.find({'_id': req.params._id }, function(err,docs){
                 if (err)
                     res.status(500).send(err);
@@ -40,17 +49,16 @@ let routes = function(Sollicitatie){
         .put(function(req,res){
             if (req.body.voornaam && req.body.achternaam && req.body.emailadres && req.body.werkervaring) {
 
-                console.log(req);
+                console.log(req.body);
 
-                req.job.voornaam = req.body.voornaam;
-                req.job.achternaam = req.body.achternaam;
-                req.job.emailadres = req.body.emailadres;
-                req.job.werkervaring = req.body.werkervaring;
+                req.s.voornaam = req.body.voornaam;
+                req.s.achternaam = req.body.achternaam;
+                req.s.emailadres = req.body.emailadres;
+                req.s.werkervaring = req.body.werkervaring;
+                req.s.vaaridgheden = req.body.vaardigheden;
 
-
-
-                req.job.save();
-                res.json(req.job);
+                req.s.save();
+                res.json(req.s);
             }
             else {
                 res.status(422).send("Some fields are empty")
@@ -58,6 +66,10 @@ let routes = function(Sollicitatie){
         })
 
         .delete(function(req, res){
+            if(req.headers.token !== 'Karim'){
+                res.status(203).send('Je hebt niet genoeg rechten deze actie uit te voeren...');
+                return;
+            }
             Sollicitatie.deleteOne({'_id': req.params._id} ,function (err) {
                 if (err) {
                     res.status(500).send(err);
@@ -73,8 +85,6 @@ let routes = function(Sollicitatie){
             res.header('Allow', 'GET, PATCH, PUT, DELETE, OPTIONS');
             res.sendStatus(200);
         });
-
-
 
     return vacatureRouter;
 };
