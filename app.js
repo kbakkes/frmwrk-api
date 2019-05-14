@@ -25,7 +25,7 @@ let port = process.env.PORT || 3000;
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'origin, content-type, accept');
+    res.header('Access-Control-Allow-Headers', 'origin, content-type, accept, token');
     if (req.accepts('json' || 'xml' || 'x-www-form-urlencoded')) {
         next();
     } else {
