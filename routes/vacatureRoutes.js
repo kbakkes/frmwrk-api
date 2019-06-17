@@ -47,10 +47,10 @@ let routes = function(Sollicitatie){
 
     sollicitatieRouter.route('/sollicitaties/:_id')
         .get(function(req,res) {
-            if(req.headers.token !== 'Karim'){
-                res.status(203).send('Je hebt niet genoeg rechten om dit te bekijken...');
-                return;
-            }
+            // if(req.headers.token !== 'Karim'){
+            //     res.status(203).send('Je hebt niet genoeg rechten om dit te bekijken...');
+            //     return;
+            // }
             Sollicitatie.find({'_id': req.params._id }, function(err,docs){
                 if (err)
                     res.status(500).send(err);
@@ -67,15 +67,17 @@ let routes = function(Sollicitatie){
 
         .put(function(req,res){
             if (req.body.voornaam && req.body.achternaam && req.body.emailadres && req.body.werkervaring) {
-                if(req.headers.token !== 'Karim'){
-                    res.status(203).send('Je hebt niet genoeg rechten deze actie uit te voeren...');
-                    return;
-                }
+                // if(req.headers.token !== 'Karim'){
+                //     res.status(203).send('Je hebt niet genoeg rechten deze actie uit te voeren...');
+                //     return;
+                // }
                 req.sollicitatie.voornaam = req.body.voornaam;
                 req.sollicitatie.achternaam = req.body.achternaam;
                 req.sollicitatie.emailadres = req.body.emailadres;
                 req.sollicitatie.werkervaring = req.body.werkervaring;
                 req.sollicitatie.vaardigheden = req.body.vaardigheden;
+                req.sollicitatie.avatar = req.body.avatar;
+
 
                 req.sollicitatie.save();
                 res.json(req.sollicitatie);
