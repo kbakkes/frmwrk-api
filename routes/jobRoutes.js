@@ -52,7 +52,6 @@ let routes = function(Job,Sollicitatie){
 
         .post(function (req,res) {
                 let sollicitatie = new Sollicitatie();
-
                 let s = req.body;
                 if (s.voornaam && s.achternaam && s.emailadres && s.werkervaring && s.vaardigheden) {
                     sollicitatie.voornaam = s.voornaam;
@@ -64,11 +63,14 @@ let routes = function(Job,Sollicitatie){
 
                     sollicitatie.save(function (err, sollicitatie) {
                         res.status(201)
-                            .send('Sollicitatie Verstuurt! Jouw unieke url om jouw profiel aan te vullen is: https://frmwrk.nl/api/' + sollicitatie._id);
+                            .send(
+                                'Sollicitatie Verstuurt! ' +
+                                'De unieke url om jouw profiel aan te vullen is: localhost:3000/edit/'
+                                + sollicitatie._id);
                     })
                 }
                 else {
-                    res.status(422).send("Nog niet alle velden zijn ingevult...")
+                    res.status(422).send("Nog niet alle velden zijn ingevuld...")
                 }
         })
 

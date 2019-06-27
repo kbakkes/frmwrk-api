@@ -1,4 +1,7 @@
 let  express = require ('express');
+const nodemailer = require('nodemailer');
+const cors = require('cors');
+
 
 let routes = function(Sollicitatie){
 
@@ -92,6 +95,7 @@ let routes = function(Sollicitatie){
                 res.status(203).send('Je hebt niet genoeg rechten deze actie uit te voeren...');
                 return;
             }
+            // Verwijder de sollicitatie waarvan het ID overeenkomt met de binnenkomende ID
             Sollicitatie.deleteOne({'_id': req.params._id} ,function (err) {
                 if (err) {
                     res.status(500).send(err);
@@ -100,6 +104,50 @@ let routes = function(Sollicitatie){
                     res.status(204).send('Sollicitatie is verwijderd...')
                 }
             });
+        })
+
+        .post(function (req,res) {
+            let data = req.body;
+            console.log(data);
+
+            let smtpTransport = nodemailer.createTransport({
+                service: 'Gmail',
+                port: 465,
+                auth: {
+                    user: 'credentials',
+                    pass: 'credentials'
+                }
+            });
+
+            let mailOptions = {
+                from: 'karim@frmwrk.nl',
+                to: data.emailadres,
+                subject: 'Sollicitatie ' + data.functie,
+                html: `<h2>Hey, ${data.voornaam}! 👋</h2>
+                <p>Bedankt voor je sollicitatie als ${data.functie}, wij hebben het in goede orde ontvangen. <br /> 
+                We zullen zo snel mogelijk contact met je opnemen! Voor vragen kun je terecht bij t.van.rooijen@frmwrk.nl</p>
+                
+                <p>Alvast kennis maken met je toekomstige collega's? Check het op onze <a href="https://www.frmwrk.nl/over-ons/ons-team">site! </a></p> 
+                <p>Met vriendelijke groet, <br /> Thomas van Rooijen</p>
+                <img style="height: 100px; width: 100px;" src="cid:icon"/>`,
+                attachments: [{
+                    filename: 'icon.png',
+                    path:  __dirname+ '/icon.png',
+                    cid: 'icon' //same cid value as in the html img src
+                }]
+            };
+
+            console.log(mailOptions.attachments);
+            smtpTransport.sendMail(mailOptions,
+                (error, response) => {
+                    if(error) {
+                        res.send(error)
+                    }else {
+                        res.sendStatus(200)
+                    }
+                    smtpTransport.close();
+                });
+
         })
 
         .options(function (req, res) {

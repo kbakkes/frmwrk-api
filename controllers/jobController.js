@@ -4,7 +4,6 @@ let jobController = function(Job) {
 
     let post = function (req, res) {
         let job = new Job();
-
         console.log(job);
 
         if (req.body.functie && req.body.ervaring) {
