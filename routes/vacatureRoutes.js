@@ -114,8 +114,8 @@ let routes = function(Sollicitatie){
                 service: 'Gmail',
                 port: 465,
                 auth: {
-                    user: 'credentials',
-                    pass: 'credentials'
+                    user: 'noreply.frmwrk@gmail.com',
+                    pass: 'Result44t'
                 }
             });
 
